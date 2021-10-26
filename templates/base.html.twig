@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}TodoApp{% endblock %}</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('css/todo.css') }}">
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+
+<body>
+    <header class="container">
+        <h1>TodoApp</h1>
+        {# {{dump(app.request.attributes.get('_route'))}} #}
+        <nav>
+            {# 
+            la variable app.request.attributes de type ParamaterBag,
+            contient des informations sur la route courante
+
+            Il ne nous reste plus qu'à faire un test sur la route dans chaque balise <li>            
+            #}
+            <ul class="nav nav-tabs">
+                <li class="{% if app.request.attributes.get('_route') == 'homepage' %}active{% endif %}">
+                    <a href="{{ path('homepage') }}">A propos</a>
+                </li>
+                <li class="{% if app.request.attributes.get('_route') == 'todo_list' %}active{% endif %}">
+                    <a href="{{ path('todo_list') }}">Todos</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {% block body %}{% endblock %}
+    </main>
+    {% block javascripts %}{% endblock %}
+</body>
+
+</html>
