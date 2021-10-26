@@ -10,10 +10,10 @@
 
     {% for key, todo in todos %}
 
-    <li class="list-group-item">
+    <li class="list-group-item" data-id="{{ key }}">
 
         <!-- TODO: delete-->
-        <form action="{{ path('todo_delete', {'id' : key}) }}" method="post">
+        <form action="{{ path('todo_delete_js', {'id' : key}) }}" method="post">
             <button class="btn btn-xs btn-link" type="submit" name="delete"><span class="glyphicon glyphicon-remove"></span></button>
         </form>
 

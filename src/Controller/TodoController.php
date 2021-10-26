@@ -94,6 +94,10 @@ class TodoController extends AbstractController
         // $model->add($newTask)
 
         TodoModel::add($newTask);
+        $this->addFlash(
+            'success',
+            'La tâche à bien été ajouté!'
+        );
         
         // 3) Redirection vers la liste des tâches
         return $this->redirectToRoute('todo_list');
@@ -125,6 +129,31 @@ class TodoController extends AbstractController
     }
 
     /**
+     * Méthode permettant la suppression d'une tâche en JS
+     * 
+     * @Route("/todo/deleteJS/{id}", name="todo_delete_js", methods={"POST"})
+     * @return void
+     */
+    public function todoDeleteJS($id)
+    {
+        // Suppression de la tâche : retourne true si ok, et false si la tâche n'existe pas
+        $result = TodoModel::delete($id);
+
+        $response = ['error'=>!$result];
+
+        if ($result === false) {
+            // Si la tâche dont l'identifant est $id n'existe pas 
+            // je retourne un message d'erreur 404
+            $this->json($response);
+        } else {   
+            // La tâche existe et la suppression s'est bien passée
+            $response ['message'] = 'La tâche n°' .$id. ' a été supprimée!';
+            $response ['id'] = $id;
+            return $this->json($response);
+        }
+    }
+
+    /**
      * Remise à zéro des tâches
      *
      * @Route("/todo/reset", name="todo_reset", methods={"GET"})
@@ -141,4 +170,5 @@ class TodoController extends AbstractController
         );
         return $this->redirectToRoute('todo_list');
     }
+
 }

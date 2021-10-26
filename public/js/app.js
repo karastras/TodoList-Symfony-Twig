@@ -12,11 +12,16 @@ var app = {
 
         console.log('bouton de form cliqué');
         // Log de l'event "e" récupéré par la fonction
-        var btn = $(e.target);
-        console.log(btn);
+        var btnSpan = $(e.target);
+        console.log(btnSpan);
         // La liste se trouve 2 parents plus
         // Il y a peut-être plus safe mais pour le moment ça fera l'affaire :)
-        var listItem = btn.parent().parent().parent();
+        var buttonForm = btnSpan.parent().parent();
+        var listItem = buttonForm.parent();
+
+        var taskId = listItem.attr('data-id');
+
+        var deleteURL = buttonForm.attr('action');
         // Envoi de la requête ajax au serveur
         $.ajax(
             // la variable 'deleteURL' est définie via Twig
@@ -25,7 +30,7 @@ var app = {
             {
                 method: 'POST',
                 data: {
-                    'id': listItem.attr('data-id')
+                    'id': taskId
                 }
             }
         // Ecouteur du retour de la requête en cas de succès
@@ -40,5 +45,5 @@ var app = {
         });
     }
 }
-
+// le $ fait référence à la libraire JQuery => ajouter le cdn dans base.html.twig
 $(app.init());
